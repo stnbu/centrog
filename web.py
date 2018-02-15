@@ -24,8 +24,12 @@ def login():
 
 @app.route('/test')
 def test():
+    query = '''SELECT receivedat, priority, fromhost, message FROM systemevents WHERE priority = 3;'''
     conn = psycopg2.connect("dbname='Syslog' user='logviewer' host='localhost' password='foo'")
-    return '>'+str(conn)+'<'
+    cur = conn.cursor()
+    cur.execute(query)
+    rows = cur.fetchall()
+    return str(len(rows))
 
 @app.route('/logout')
 def logout():
