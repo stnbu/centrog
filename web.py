@@ -24,7 +24,8 @@ def login():
 
 @app.route('/test')
 def test():
-    conn = psycopg2.connect("dbname='template1' user='dbuser' host='localhost' password='dbpass'")
+    conn = psycopg2.connect("dbname='Syslog' user='logviewer' host='localhost' password='foo'")
+    return '>'+str(conn)+'<'
 
 @app.route('/logout')
 def logout():
