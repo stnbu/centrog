@@ -2,22 +2,37 @@ import psycopg2
 import flask
 import flask_wtf
 import wtforms
+import collections
 
 app = flask.Flask(__name__)
-app.secret_key = 'foo'
+app.config['WTF_CSRF_ENABLED'] = False  # we do not care
 
+display_columns_choices = [
+    ('foo', 'foo'),
+    ('bar', 'bar'),
+    ('baz', 'baz'),
+]
 
 class DBQueryForm(flask_wtf.FlaskForm):
-    name = wtforms.StringField('name')
+    display_columns = wtforms.SelectMultipleField('display_columns', choices=display_columns_choices)
+    sort_column = wtforms.TextField('sort_column')
+    tag = wtforms.TextField('tag', validators=[wtforms.validators.InputRequired()])
+    max_records = wtforms.IntegerField('max_records')
+
+    def validate_on_submit(self):
+        return self.validate()
 
 
 @app.route('/')
 def query():
-    form = DBQueryForm()
-    # if form.validate_on_submit():
-    #     return 'foo'
-    name = flask.request.args.get('name')
-    print 'you said', name
+    args = flask.request.args
+    form = DBQueryForm(args)
+
+    if form.validate_on_submit():
+        print 'GOT'
+    else:
+        print 'DID NOT GOT'
+
     return flask.render_template('index.html', form=form)
 
 

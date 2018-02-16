@@ -1,4 +1,7 @@
 <form method="GET" action="/">
-    {{ form.name.label }} {{ form.name(size=20) }}
+    {{ form.sort_column.label }} {{ form.sort_column(size=50) }} <br />
+    {{ form.tag.label }} {{ form.tag(size=50) }} <br />
+    {{ form.display_columns.label }} {{ form.display_columns() }} <br />
+    {{ form.max_records.label }} {{ form.max_records() }} <br />
     <input type="submit" value="Go">
 </form>
