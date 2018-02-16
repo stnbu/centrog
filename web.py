@@ -64,13 +64,17 @@ def query():
     args = flask.request.args
     form = DBQueryForm(args)
 
-    results = 'no sql query generated...'
+    rows = []
+    column_headers = []
     if form.validate_on_submit():
         sql = get_sql_query(data=form.data)
-        print sql
-        results = get_rows(sql)
+        rows = get_rows(sql)
 
-    return flask.render_template('index.html', form=form, debug_text=results)
+        c = dict(columns)
+        for column_name in form.data['display_columns']:
+            column_headers.append(c[column_name])
+
+    return flask.render_template('index.html', form=form, column_headers=column_headers, rows=rows)
 
 
 def get_rows(sql):

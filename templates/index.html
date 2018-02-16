@@ -31,6 +31,23 @@ div {
     background-color: #f2f2f2;
     padding: 20px;
 }
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
 </style>
 <body>
 
@@ -62,7 +79,27 @@ div {
 </form>
 </div>
 
-<h1>{{ debug_text }}</h1>
+<hr />
+
+<div>
+  {% if rows %}
+<table>
+<tr>
+  {% for column_header in column_headers %}
+    <th>{{ column_header }}</th>
+  {% endfor %}
+</tr>
+
+{% for row in rows %}
+<tr>
+  {% for value in row %}
+   <td>{{ value }}</td>
+  {% endfor %}
+</tr>
+{% endfor %}
+</table>
+  {% endif %}
+</div>
 
 </body>
 </html>
