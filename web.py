@@ -7,42 +7,69 @@ import collections
 app = flask.Flask(__name__)
 app.config['WTF_CSRF_ENABLED'] = False  # we do not care
 
-display_columns_choices = [
-    ('foo', 'foo'),
-    ('bar', 'bar'),
-    ('baz', 'baz'),
+MAX_RECORDS_DEFAULT = 1000
+
+columns = [
+    ('id', 'Log record order'),
+    ('priority', 'Priority'),
+    ('syslogtag', 'Syslog tag'),
+    ('message', 'Log message'),
+    ('receivedat', 'Message received time'),
+    ('fromhost', 'From host'),
+]
+
+priorities = [
+    ('3', 'ERROR'),
+    ('4', 'WARNING'),
 ]
 
 class DBQueryForm(flask_wtf.FlaskForm):
     display_columns = wtforms.SelectMultipleField(id='display_columns',
-                                                  label='Columns to display:',
-                                                  choices=display_columns_choices)
+                                                  label='Columns to display (multi-select):',
+                                                  choices=columns,
+                                                  default=['syslogtag', 'receivedat', 'message'],
+                                                  validators=[wtforms.validators.InputRequired()])
 
-    sort_column = wtforms.TextField(id='sort_column',
-                                    label='Column to sort by:')
+    sort_column = wtforms.SelectField(id='sort_column',
+                                      label='Column to sort by:',
+                                      choices=columns,
+                                      default='id')
 
     tag = wtforms.TextField(id='tag',
-                            label='Syslog tag:',
+                            label='Syslog tag (required):',
                             validators=[wtforms.validators.InputRequired()])
 
     max_records = wtforms.IntegerField(id='max_records',
-                                       label='Maximum records to return:')
+                                       label='Maximum records to return:',
+                                       default=MAX_RECORDS_DEFAULT)
+
+    priority = wtforms.SelectField(id='priority',
+                                   label='Minimum message priority:',
+                                   choices=priorities,
+                                   default='3')
 
     def validate_on_submit(self):
         return self.validate()
 
+def get_sql_query(data):
+    query_template = """
+        SELECT {display_columns} FROM systemevents WHERE priority = {priority} AND tag = {tag};
+    """
+    data['display_columns'] = ', '.join(data['display_columns'])
+    sql = query_template.format(**data)
+    print sql
+    return sql
 
 @app.route('/')
 def query():
     args = flask.request.args
     form = DBQueryForm(args)
 
+    sql = 'no sql query generated...'
     if form.validate_on_submit():
-        print 'GOT'
-    else:
-        print 'DID NOT GOT'
+        sql = get_sql_query(data=form.data)
 
-    return flask.render_template('index.html', form=form)
+    return flask.render_template('index.html', form=form, debug_text=sql)
 
 
 @app.route('/test')
