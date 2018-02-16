@@ -1,7 +1,22 @@
-<form method="GET" action="/">
-    {{ form.sort_column.label }} {{ form.sort_column(size=50) }} <br />
-    {{ form.tag.label }} {{ form.tag(size=50) }} <br />
-    {{ form.display_columns.label }} {{ form.display_columns() }} <br />
-    {{ form.max_records.label }} {{ form.max_records() }} <br />
-    <input type="submit" value="Go">
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+<form method=GET>
+  <dl>
+    {{ render_field(form.sort_column) }}
+    {{ render_field(form.tag) }}
+    {{ render_field(form.display_columns) }}
+    {{ render_field(form.max_records) }}
+  </dl>
+  <p><input type=submit value=Search>
 </form>
