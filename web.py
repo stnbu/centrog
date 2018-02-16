@@ -11,16 +11,19 @@ MAX_RECORDS_DEFAULT = 1000
 
 columns = [
     ('id', 'Native database ordering'),
-    ('priority', 'Priority'),
-    ('syslogtag', 'Syslog tag'),
-    ('message', 'Log message'),
     ('receivedat', 'Message received time'),
+    ('priority', 'Priority'),
     ('fromhost', 'From host'),
+    ('message', 'Log message'),
+    ('syslogtag', 'Syslog tag'),
 ]
 
 priorities = [
+    ('2', 'CRITICAL'),
     ('3', 'ERROR'),
     ('4', 'WARNING'),
+    ('5', 'INFO'),
+    ('6', 'DEBUG'),
 ]
 
 class DBQueryForm(flask_wtf.FlaskForm):
