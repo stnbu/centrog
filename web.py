@@ -53,11 +53,10 @@ class DBQueryForm(flask_wtf.FlaskForm):
 
 def get_sql_query(data):
     query_template = """
-        SELECT {display_columns} FROM systemevents WHERE priority = {priority} AND tag = {tag};
+        SELECT {display_columns} FROM systemevents WHERE priority = '{priority}' AND syslogtag = '{tag}';
     """
     data['display_columns'] = ', '.join(data['display_columns'])
     sql = query_template.format(**data)
-    print sql
     return sql
 
 @app.route('/')
@@ -65,21 +64,21 @@ def query():
     args = flask.request.args
     form = DBQueryForm(args)
 
-    sql = 'no sql query generated...'
+    results = 'no sql query generated...'
     if form.validate_on_submit():
         sql = get_sql_query(data=form.data)
+        print sql
+        results = get_rows(sql)
 
-    return flask.render_template('index.html', form=form, debug_text=sql)
+    return flask.render_template('index.html', form=form, debug_text=results)
 
 
-@app.route('/test')
-def test():
-    query = '''SELECT receivedat, priority, fromhost, message FROM systemevents WHERE priority = 3;'''
+def get_rows(sql):
     conn = psycopg2.connect("dbname='Syslog' user='logviewer' host='localhost' password='foo'")
     cur = conn.cursor()
-    cur.execute(query)
+    cur.execute(sql)
     rows = cur.fetchall()
-    return str(len(rows))
+    return rows
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=1234, debug=True)
