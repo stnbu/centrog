@@ -2,10 +2,11 @@
 """
 
 # FIXME: there is a criminally ugly hack used below having to do with syslog tagging. I haven't gotten to the bottom
-# of it yet, but it looks like python retains the ":" at the end of the tag...somehow. TBD, the below hacks hides the
-# mess from the user.
+# of it yet, but it looks like python retains the ":" at the end of the tag...somehow. TBD.
 #
-# mburr@unintuitive.org
+# The below hacks hides the mess from the user.
+#
+# -- mburr@unintuitive.org
 
 import psycopg2
 import flask
@@ -61,11 +62,13 @@ class DBQueryForm(flask_wtf.FlaskForm):
                                    default='3')
 
     def validate_on_submit(self):
+        """Default method insists only on "POST". We use "GET".
+        """
         return self.validate()
 
 
 def get_treated_rows(columns, rows):
-    """Brutally inefficent...
+    """Brutally inefficient...
 
     Loop through the rows and make changes...
     """
@@ -123,6 +126,8 @@ def get_rows(sql):
     cur.execute(sql)
     rows = cur.fetchall()
     return rows
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=1234, debug=True)

@@ -1,1 +1,3 @@
 """foo"""
+
+from base import *

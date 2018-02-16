@@ -4,13 +4,19 @@ _author = 'Mike Burr'
 _email = 'mburr@unintuitive.org'
 __author__ = '%s <%s>' % (_author, _email)
 
+try:
+    # we want the "setup.py develop" command, import can fail.
+    import setuptools
+except ImportError:
+    pass
+
 from distutils.core import setup
 import time
 
 # my modules
 import centrog
 
-# README.rst dynamically generated:
+# README.md dynamically generated:
 with open('README.md', 'w') as f:
     f.write(centrog.__doc__)
 
