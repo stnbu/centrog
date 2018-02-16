@@ -10,7 +10,7 @@ app.config['WTF_CSRF_ENABLED'] = False  # we do not care
 MAX_RECORDS_DEFAULT = 1000
 
 columns = [
-    ('id', 'Log record order'),
+    ('id', 'Native database ordering'),
     ('priority', 'Priority'),
     ('syslogtag', 'Syslog tag'),
     ('message', 'Log message'),
