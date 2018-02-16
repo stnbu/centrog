@@ -14,10 +14,19 @@ display_columns_choices = [
 ]
 
 class DBQueryForm(flask_wtf.FlaskForm):
-    display_columns = wtforms.SelectMultipleField('display_columns', choices=display_columns_choices)
-    sort_column = wtforms.TextField('sort_column')
-    tag = wtforms.TextField('tag', validators=[wtforms.validators.InputRequired()])
-    max_records = wtforms.IntegerField('max_records')
+    display_columns = wtforms.SelectMultipleField(id='display_columns',
+                                                  label='Columns to display:',
+                                                  choices=display_columns_choices)
+
+    sort_column = wtforms.TextField(id='sort_column',
+                                    label='Column to sort by:')
+
+    tag = wtforms.TextField(id='tag',
+                            label='Syslog tag:',
+                            validators=[wtforms.validators.InputRequired()])
+
+    max_records = wtforms.IntegerField(id='max_records',
+                                       label='Maximum records to return:')
 
     def validate_on_submit(self):
         return self.validate()
