@@ -13,7 +13,7 @@ If You Use Goat
 
 That's it!! Your logs will be available here: http://10.20.68.188/
 
-Figure out your syslog tag (a.k.a. "run name"), enter it in the `Syslog tag` texts box and click `Search`. Enjoy!
+Figure out your syslog tag (a.k.a. "run name"), enter it in the "``Syslog tag``" texts box and click "``Search``". Enjoy!
 
 If your situation is more complicated or just need help, `go here <https://github.com/stnbu/centrog>`_
 
@@ -23,9 +23,14 @@ More
 
 Contributions, collaborations welcome!
 
+Very simple and easy to adapt to any project using python, you must need to include a syslog "tag".
+
 The `production server <http://10.20.68.188/>`_ really is "production" in the sense that I will try very hard not to
 break it and maximize uptime. **HOWEVER** the IP address will change when it moves to its dedicated VM and also there
 will be a memorable DNS name for it (suggestions welcome) hopefully soon.
+
+
+development (please do not update.)
 
 
 lots of missing documentation content goes here...
@@ -44,7 +49,7 @@ files, these are provided only to be used as a hint, as they came from a working
 
 Plopping these on a host is *not* the right thing to do.
 
-Magical incantation to update server_config files:
+Magical incantation to update server_config files...
 
 .. code:: bash
 
@@ -55,6 +60,14 @@ Magical incantation to update server_config files:
 
 The results can be found in the
 `server_config/` folder.
+
+How I create docs (the wrong way) as of now...
+
+.. code:: bash
+
+    python -c 'import centrog ; print centrog.__doc__' | \\
+     rst2html | \\
+     ssh mburr@presence.mburr.unintuitive.org 'cat > ~/public_html/scratch/temporary_centrog_docs.html'
 """
 
 from base import *
