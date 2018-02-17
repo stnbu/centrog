@@ -100,6 +100,14 @@ def get_sql_query(data):
 @app.route('/')
 def index():
     args = flask.request.args
+
+    # for name in xx:
+    #     arg = getattr(DBQueryForm, name)
+    #     default = arg.kwargs['default']
+    #     if default is not None:
+    # args.update(updates)
+    # import pudb ;pudb.set_trace()
+
     form = DBQueryForm(args)
 
     rows = []
@@ -131,3 +139,4 @@ def get_rows(sql):
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=1234, debug=True)
+
