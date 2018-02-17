@@ -15,6 +15,7 @@ That's it!! Your logs will be available here: http://10.20.68.188/
 
 Figure out your syslog tag (a.k.a. "run name"), enter it in the "``Syslog tag``" texts box and click "``Search``". Enjoy!
 
+
 If your situation is more complicated or just need help, `go here <https://github.com/stnbu/centrog>`_
 
 More
