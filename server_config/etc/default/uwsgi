@@ -1,0 +1,4 @@
+RUN_AT_STARTUP=yes
+VERBOSE=yes
+PRINT_CONFNAMES_IN_INITD_SCRIPT_OUTPUT=yes
+INHERITED_CONFIG=/usr/share/uwsgi/conf/default.ini
