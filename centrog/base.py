@@ -91,7 +91,7 @@ def get_treated_rows(columns, rows):
 
 def get_sql_query(data):
     query_template = """
-        SELECT {display_columns} FROM systemevents WHERE priority = '{priority}' AND syslogtag = '{syslogtag}';
+        SELECT {display_columns} FROM systemevents WHERE priority <= '{priority}' AND syslogtag = '{syslogtag}';
     """
     data['display_columns'] = ', '.join(data['display_columns'])
     sql = query_template.format(**data)
