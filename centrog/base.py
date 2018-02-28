@@ -20,7 +20,7 @@ app.config['WTF_CSRF_ENABLED'] = False  # we do not care
 MAX_RECORDS_DEFAULT = 1000
 
 columns = [
-    ('id', 'Native database ordering'),
+    ('id', ''),
     ('receivedat', 'Message received time'),
     ('priority', 'Priority'),
     ('fromhost', 'From host'),
@@ -30,6 +30,9 @@ columns = [
 
 # we do this to preserve ordering.
 default_columns = [n for n, _ in columns if n in ['fromhost', 'priority', 'receivedat', 'message']]
+
+# we omit "id" since it is always displayed (as an anchor link)
+display_columns = [(n,d) for n,d in columns if n != 'id']
 
 priorities = [
     ('2', 'CRITICAL'),
@@ -42,7 +45,7 @@ priorities = [
 class DBQueryForm(flask_wtf.FlaskForm):
     display_columns = wtforms.SelectMultipleField(id='display_columns',
                                                   label='Columns to display (multi-select):',
-                                                  choices=columns,
+                                                  choices=display_columns,
                                                   default=default_columns,
                                                   validators=[wtforms.validators.InputRequired()])
 
@@ -128,6 +131,11 @@ def index():
     rows = []
     column_headers = []
     if form.data['syslogtag'] is not None:
+
+        # "id" is always in the columns we display, query for.
+        if 'id' not in form.display_columns.data:
+            form.display_columns.data.insert(0, 'id')
+
         # FIXME: criminally ugly hack (see top of module)
         form.syslogtag.data = form.data['syslogtag'] + u':'
         sql = get_sql_query(data=form.data)
