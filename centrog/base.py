@@ -28,6 +28,9 @@ columns = [
     ('syslogtag', 'Syslog tag'),
 ]
 
+# we do this to preserve ordering.
+default_columns = [n for n, _ in columns if n in ['syslogtag', 'receivedat', 'message']]
+
 priorities = [
     ('2', 'CRITICAL'),
     ('3', 'ERROR'),
@@ -40,7 +43,7 @@ class DBQueryForm(flask_wtf.FlaskForm):
     display_columns = wtforms.SelectMultipleField(id='display_columns',
                                                   label='Columns to display (multi-select):',
                                                   choices=columns,
-                                                  default=['syslogtag', 'receivedat', 'message'],
+                                                  default=default_columns,
                                                   validators=[wtforms.validators.InputRequired()])
 
     sort_column = wtforms.SelectField(id='sort_column',
@@ -100,19 +103,21 @@ def get_sql_query(data):
 @app.route('/')
 def index():
     args = flask.request.args
-
-    # for name in xx:
-    #     arg = getattr(DBQueryForm, name)
-    #     default = arg.kwargs['default']
-    #     if default is not None:
-    # args.update(updates)
-    # import pudb ;pudb.set_trace()
-
     form = DBQueryForm(args)
+
+    # Populate defaults so we can have shorter URLs
+    for name, attr in vars(DBQueryForm).items():
+        if isinstance(attr, wtforms.core.UnboundField):
+            if 'default' not in attr.kwargs:
+                continue
+            default = attr.kwargs['default']
+            field = getattr(form, name)
+            if not field.data:
+                field.data = default
 
     rows = []
     column_headers = []
-    if form.validate_on_submit():
+    if form.data['syslogtag'] is not None:
         # FIXME: criminally ugly hack (see top of module)
         form.syslogtag.data = form.data['syslogtag'] + u':'
         sql = get_sql_query(data=form.data)
