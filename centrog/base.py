@@ -29,7 +29,7 @@ columns = [
 ]
 
 # we do this to preserve ordering.
-default_columns = [n for n, _ in columns if n in ['syslogtag', 'receivedat', 'message']]
+default_columns = [n for n, _ in columns if n in ['fromhost', 'priority', 'receivedat', 'message']]
 
 priorities = [
     ('2', 'CRITICAL'),
@@ -70,6 +70,14 @@ class DBQueryForm(flask_wtf.FlaskForm):
         return self.validate()
 
 
+class Cell(object):
+    """Represents a "cell" (<td />) in html. Attrs can be used for CSS selection.
+    """
+    def __init__(self, value, **kwargs):
+        self.value = value
+        self.__dict__.update(kwargs)
+
+
 def get_treated_rows(columns, rows):
     """Brutally inefficient...
 
@@ -86,6 +94,8 @@ def get_treated_rows(columns, rows):
                 value = value[:-1]
             elif column_name == 'priority':
                 value = priorities_dict[str(value)]
+            # we use column_name as the <td/> "class"
+            value = Cell(value, column_name=column_name)
             new_row.append(value)
         new_rows.append(new_row)
 

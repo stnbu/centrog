@@ -42,6 +42,12 @@ td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+    width: auto;
+}
+
+/* the "message" column wants as much width as possible. Others are "auto;" */
+td.message {
+    width: 100%;
 }
 
 tr:nth-child(even) {
@@ -118,8 +124,8 @@ tr:nth-child(even) {
 
 {% for row in rows %}
 <tr>
-  {% for value in row %}
-   <td>{{ value }}</td>
+  {% for cell in row %}
+   <td class="{{ cell.column_name }}">{{ cell.value }}</td>
   {% endfor %}
 </tr>
 {% endfor %}
