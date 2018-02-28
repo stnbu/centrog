@@ -35,11 +35,11 @@ default_columns = [n for n, _ in columns if n in ['fromhost', 'priority', 'recei
 display_columns = [(n,d) for n,d in columns if n != 'id']
 
 priorities = [
-    ('2', 'CRITICAL'),
-    ('3', 'ERROR'),
-    ('4', 'WARNING'),
-    ('5', 'INFO'),
-    ('6', 'DEBUG'),
+    ('3', 'CRITICAL'),
+    ('4', 'ERROR'),
+    ('5', 'WARNING'),
+    ('6', 'INFO'),
+    ('7', 'DEBUG'),
 ]
 
 class DBQueryForm(flask_wtf.FlaskForm):
@@ -48,11 +48,6 @@ class DBQueryForm(flask_wtf.FlaskForm):
                                                   choices=display_columns,
                                                   default=default_columns,
                                                   validators=[wtforms.validators.InputRequired()])
-
-    sort_column = wtforms.SelectField(id='sort_column',
-                                      label='Column to sort by:',
-                                      choices=columns,
-                                      default='id')
 
     syslogtag = wtforms.TextField(id='syslogtag',
                             label='Syslog tag (required):',
@@ -87,7 +82,6 @@ def get_treated_rows(columns, rows):
     Loop through the rows and make changes...
     """
     priorities_dict = dict(priorities)
-    print priorities_dict
     new_rows = []
     for row in rows:
         new_row = []
@@ -107,7 +101,9 @@ def get_treated_rows(columns, rows):
 
 def get_sql_query(data):
     query_template = """
-        SELECT {display_columns} FROM systemevents WHERE priority <= '{priority}' AND syslogtag = '{syslogtag}';
+        SELECT {display_columns} FROM systemevents
+        WHERE priority <= '{priority}' AND syslogtag = '{syslogtag}'
+        LIMIT {max_records};
     """
     data['display_columns'] = ', '.join(data['display_columns'])
     sql = query_template.format(**data)
