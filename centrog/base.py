@@ -61,7 +61,7 @@ class DBQueryForm(flask_wtf.FlaskForm):
     priority = wtforms.SelectField(id='priority',
                                    label='Minimum message priority:',
                                    choices=priorities,
-                                   default='3')
+                                   default='5')
 
     def validate_on_submit(self):
         """Default method insists only on "POST". We use "GET".
