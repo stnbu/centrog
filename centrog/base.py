@@ -8,6 +8,7 @@
 #
 # -- mburr@unintuitive.org
 
+import os
 import psycopg2
 import flask
 import flask_wtf
@@ -148,7 +149,10 @@ def index():
 
 
 def get_rows(sql):
-    conn = psycopg2.connect("dbname='Syslog' user='logviewer' host='localhost' password='foo'")
+    # poor-mans config
+    secret = os.path.expanduser('~/.centrog/secret.py')
+    execfile(secret)  # has "connection_spec"
+    conn = psycopg2.connect(locals()['connection_spec'])
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
