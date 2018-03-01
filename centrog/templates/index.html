@@ -1,102 +1,114 @@
 <!DOCTYPE html>
 <html>
-<style>
-input[type=text], select {
-    width: 100%;
-    padding: 9px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
 
-input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 9px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+<head>
+    <title>centrog</title>
+    <style>
+        h1 {
+            color: red;
+        }
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
+        input[type=text],
+        select {
+            width: 100%;
+            padding: 9px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-div {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-}
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 9px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    width: auto;
-}
+        div {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
 
-/* the "message" column wants as much width as possible. Others are "auto;" */
-td.message {
-    width: 100%;
-}
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-/* the "id" column is a unicode link char, we provide so we can link to log rows
-   prettier if we don't do any hyperlink decoration
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            width: auto;
+        }
+        /* the "message" column wants as much width as possible. Others are "auto;" */
 
-   BTW the *class* name is "id", this is not the element id ...confusing!
- */
-a.id {
-    text-decoration: none;
-}
+        td.message {
+            width: 100%;
+        }
+        /* the "id" column is a unicode link char, we provide so we can link to log rows prettier if we don't do any
+        hyperlink decoration
 
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
+        BTW the *class* name is "id", this is not the element id ...confusing!
+        */
+        a.id {
+            text-decoration: none;
+        }
 
-</style>
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
 <body>
 
-<h3>All logs in one place, filterable and searchable...</h3>
 
+    <p>If you came here and did not immedately see the root cause of your problem right in front of you, we need to fix
+      logging!
+    </p>
 
-<ul>
-  <li>
-    If you didn't find the problem here but later
-    find it in a <em>debug</em> message, file a bug! That message should be level "ERROR".
-  </li>
+    <ul>
+        <li>
+            If you didn't find the problem here but later find it in a <em>debug</em> message, file a bug! That message
+          should be level "ERROR".
+        </li>
 
-  <li>
-    Likewise, if it's hard to identify the problem because there are many unhelpful ERROR messages, file a bug! Those
-    messages should <em>not</em> be level "ERROR".
-  </li>
+        <li>
+            Likewise, if it's hard to identify the problem because there are many unhelpful ERROR messages, file a bug!
+          Those messages should <em>not</em> be level "ERROR".
+        </li>
 
-  <li>
-    If you didn't find the root cause of your problem in the logs <em>at all</em>, that's also a problem. File a bug!
-  </li>
+        <li>
+            If you didn't find the root cause of your problem in the logs <em>at all</em>, that's also a problem. File a
+          bug!
+        </li>
 
-</ul>
+    </ul>
 
-<p>
-  Thanks!
-</p>
+    <p>
+        Thanks!
+    </p>
 
-<p>
-  Get help <a href="https://github.com/stnbu/centrog">here</a>.
-</p>
+    <p>
+      here</a>. Get help <a href="https://github.com/stnbu/centrog">here</a>.
+    </p>
 
-<div>
-{% macro render_field(field) %}
-  <dt>{{ field.label }}
+    <div>
+        {% macro render_field(field) %}
+        <dt>{{ field.label }}
   <dd>{{ field(**kwargs)|safe }}
   {% if field.errors %}
     <ul class=errors>
