@@ -70,6 +70,12 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+        tr.priority_3 {
+            color: red;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
@@ -143,7 +149,7 @@
 </tr>
 
 {% for row in rows %}
-<tr>
+<tr class="priority_{{ row.priority }}">
   {% for cell in row %}
   {% if cell.column_name == 'id' %}
   {# if the "id" column, include the unicode "link" char #}

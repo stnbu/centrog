@@ -77,6 +77,14 @@ class Cell(object):
         self.__dict__.update(kwargs)
 
 
+class Row(list):
+    """Object used to populate a row (<tr />) in the template
+    """
+    def __new__(cls, *args, **kwargs):
+        cls.priority = None
+        return super(Row, cls).__new__(cls, *args, **kwargs)
+
+
 def get_treated_rows(columns, rows):
     """Brutally inefficient...
 
@@ -85,8 +93,10 @@ def get_treated_rows(columns, rows):
     priorities_dict = dict(priorities)
     new_rows = []
     for row in rows:
-        new_row = []
+        new_row = Row()
         for column_name, value in zip(columns, row):
+            if column_name == 'priority':
+                new_row.priority = value
             if column_name == 'syslogtag':
                 # FIXME: criminally ugly hack (see top of module)
                 value = value[:-1]
