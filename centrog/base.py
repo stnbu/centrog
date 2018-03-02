@@ -36,6 +36,7 @@ default_columns = [n for n, _ in columns if n in ['fromhost', 'priority', 'recei
 display_columns = [(n,d) for n,d in columns if n != 'id']
 
 priorities = [
+    ('2', 'EMERGENCY'),
     ('3', 'CRITICAL'),
     ('4', 'ERROR'),
     ('5', 'WARNING'),
