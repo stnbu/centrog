@@ -7,16 +7,15 @@ This project is just getting off the ground, but I wanted to let folks know how 
 If You Use Goat
 ---------------
 
+The changes required for remote logging are currently checked into `development` but will only be enabled if you're
+doing a nimbus run. Output will include a line like this:
 
 .. code::
 
+    http://localhost/?syslogtag=XXXXXXXXXX.XX
 
-That's it!! Your logs will be available here: http://10.20.68.188/
+The UI is fairly simple, feel free to play around.
 
-Figure out your syslog tag (a.k.a. "run name"), enter it in the "``Syslog tag``" texts box and click "``Search``". Enjoy!
-
-
-If your situation is more complicated or just need help, `go here <https://github.com/stnbu/centrog>`_
 
 More
 ----
@@ -25,19 +24,6 @@ More
 Contributions, collaborations welcome!
 
 Very simple and easy to adapt to any project using python, you must need to include a syslog "tag".
-
-The `production server <http://10.20.68.188/>`_ really is "production" in the sense that I will try very hard not to
-break it and maximize uptime. **HOWEVER** the IP address will change when it moves to its dedicated VM and also there
-will be a memorable DNS name for it (suggestions welcome) hopefully soon.
-
-
-development (please do not update.)
-
-
-lots of missing documentation content goes here...
---------------------------------------------------
-
-blah blah blah
 
 
 Setting up the Server
@@ -68,7 +54,7 @@ How I create docs (the wrong way) as of now...
 
     python -c 'import centrog ; print centrog.__doc__' | \\
      rst2html | \\
-     ssh mburr@presence.mburr.unintuitive.org 'cat > ~/public_html/scratch/temporary_centrog_docs.html'
+     ssh mburr@10.20.68.95 'cat > ~/public_html/scratch/temporary_centrog_docs.html'
 """
 
 from base import *
